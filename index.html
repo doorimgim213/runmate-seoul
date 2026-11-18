@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>런메이트 서울 · RUNMATE SEOUL</title>
+<meta name="description" content="서울 2030을 위한 소셜 러닝 매칭 플랫폼. 서울 러닝 코스와 페이스·거리·성향으로 나에게 맞는 러닝 크루를 찾아보세요." />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- 공용 SVG 패턴 -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <pattern id="grid" width="22" height="22" patternUnits="userSpaceOnUse" patternTransform="rotate(12)">
+      <path d="M22 0H0V22" fill="none" stroke="#232A33" stroke-width="1"/>
+    </pattern>
+    <pattern id="grid2" width="60" height="60" patternUnits="userSpaceOnUse" patternTransform="rotate(-20)">
+      <path d="M60 0H0V60" fill="none" stroke="#2A323D" stroke-width="2.5"/>
+    </pattern>
+  </defs>
+</svg>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a href="#top" class="logo"><span class="logo-dot"></span>RUNMATE<b>SEOUL</b></a>
+    <nav class="nav-links">
+      <a href="#courses">러닝 코스</a>
+      <a href="#runhub">런허브 대여</a>
+      <a href="#match">매칭 테스트</a>
+      <a href="#crews">크루 찾기</a>
+      <a href="#create">크루 만들기</a>
+    </nav>
+    <button class="btn btn-sm" id="myBtn">가입 · 인증</button>
+  </div>
+</header>
+
+<main id="top">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-inner">
+      <div class="hero-text">
+        <p class="seoul-only">📍 SEOUL ONLY · 서울 25개 구에서만 운영해요</p>
+        <h1>혼자 뛰긴 심심하고,<br/>아무나랑 뛰긴 <em>애매할 때.</em></h1>
+        <p class="lead">한강부터 남산, 동네 하천길까지.<br/>코스, 페이스, 거리, 러닝 성향을 맞춰<br class="br-m"/> 서울에서 같이 뛸 크루를 연결해드려요.<br/><b class="lead-b">러닝화·러닝복이 없어도 코스 옆 CU 런허브에서 데카트론 장비를 빌리면 끝.</b></p>
+        <div class="hero-cta">
+          <a href="#courses" class="btn btn-primary">코스 고르기</a>
+          <a href="#match" class="btn btn-ghost">30초 매칭 테스트 →</a>
+        </div>
+        <ul class="stats">
+          <li><b id="statCrews">0</b><span>모집 중인 크루</span></li>
+          <li><b id="statCourses">0</b><span>서울 러닝 코스</span></li>
+          <li><b id="statHubs">0</b><span>런허브 대여점</span></li>
+        </ul>
+      </div>
+      <div class="hero-stack" id="heroStack" aria-hidden="true"></div>
+    </div>
+    <div class="marquee"><div>여의도 · 반포 · 뚝섬 · 망원 · 서울숲 · 남산 · 올림픽공원 · 석촌호수 · 청계천 · 양재천 · 북악 · 잠실 · 안양천 · 불광천 · 여의도 · 반포 · 뚝섬 · 망원 · 서울숲 · 남산 · 올림픽공원 · 석촌호수 · 청계천 · 양재천 · 북악 · 잠실 · 안양천 · 불광천 ·</div></div>
+  </section>
+
+  <!-- HOW -->
+  <section id="how" class="section">
+    <div class="wrap">
+      <p class="eyebrow">HOW IT WORKS</p>
+      <h2>두 가지 방식으로 같이 달려요</h2>
+      <div class="steps two-col">
+        <article>
+          <span class="num">📍 지정 코스 크루</span>
+          <h3>같은 시간, 같은 코스에서 함께</h3>
+          <p>반포한강공원, 남산처럼 정해진 서울 러닝 코스에서 크루원들과 만나 같이 달려요. 코스 카드에서 마음에 드는 곳을 골라보세요.</p>
+        </article>
+        <article class="free">
+          <span class="num">🗺 자유 코스 크루</span>
+          <h3>각자 원하는 코스에서, 따로 또 같이</h3>
+          <p>코스를 정하지 않아요. 서울 안에서 각자 원하는 곳을 달리고 기록을 인증하면서 주간 목표를 같이 채워요.</p>
+        </article>
+      </div>
+
+      <div class="safe">
+        <div class="safe-head">
+          <p class="eyebrow">SAFE RUNNING</p>
+          <h3>믿고 만날 수 있도록,<br/>가입할 때 두 번 인증해요</h3>
+        </div>
+        <div class="safe-items">
+          <div><span class="safe-ico">🪪</span><b>휴대폰 본인인증</b><p>실명과 생년월일을 확인해요. 2030(만 19~39세) 러너만 가입할 수 있어요.</p></div>
+          <div><span class="safe-ico">📍</span><b>서울 동네 인증</b><p>현재 GPS 위치로 서울 몇 구에 사는지 인증해요. 30일마다 다시 인증해요.</p></div>
+          <div><span class="safe-ico">✅</span><b>인증 배지</b><p>인증한 러너만 참가 신청과 크루 개설을 할 수 있고, 프로필에 배지가 붙어요.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COURSES -->
+  <section id="courses" class="section dark">
+    <div class="wrap">
+      <p class="eyebrow lime-t">SEOUL RUNNING COURSES</p>
+      <h2>서울 러닝 코스에서 골라보세요</h2>
+      <p class="sub">달리고 싶은 코스를 눌러 선택하세요. 여러 개를 고를 수 있고, 고른 코스에서 모이는 크루를 보여드려요.</p>
+      <div class="cats-row"><div class="cats" id="courseCats"></div><button class="btn btn-sm btn-primary" id="drawBtn">＋ 나만의 코스 등록</button></div>
+      <div class="course-grid" id="courseGrid"></div>
+      <div class="select-bar" id="selectBar">
+        <span id="selectText">코스를 선택해보세요</span>
+        <div class="sb-actions">
+          <button class="btn btn-sm btn-ghost-d" id="clearCourses">선택 해제</button>
+          <a href="#crews" class="btn btn-sm btn-primary" id="goCrews">크루 보기 →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RUN HUB -->
+  <section id="runhub" class="section hub-sec">
+    <div class="wrap">
+      <div class="collab"><span class="c-dec">DECATHLON</span><i>×</i><span class="c-rm">RUNMATE SEOUL</span><i>×</i><span class="c-cu">CU</span></div>
+      <p class="eyebrow">RUN HUB RENTAL</p>
+      <h2>빈손으로 와도 괜찮아요</h2>
+      <p class="sub">러닝 코스 바로 옆 <b>CU 편의점 ‘런허브’</b>에서 <b>데카트론 KIPRUN</b> 러닝화와 러닝복을 빌리고, 달린 뒤 가까운 CU 런허브 아무 곳에나 반납하세요.</p>
+
+      <div class="hub-steps">
+        <div><span>1</span><b>앱에서 예약</b><p>런허브 지점, 픽업 시간, 사이즈를 고르고 결제해요.</p></div>
+        <div><span>2</span><b>CU에서 픽업</b><p>CU 계산대에 픽업 코드를 보여주면 바로 받아요. 짐은 보관함에 맡겨요.</p></div>
+        <div><span>3</span><b>달리고 어디서든 반납</b><p>3시간 안에 서울 모든 CU 런허브에 반납하면 끝. 마음에 들면 데카트론 구매 쿠폰까지.</p></div>
+      </div>
+
+      <div class="hub-layout">
+        <div class="hub-map" id="hubMap"><div class="map-off">지도를 불러오는 중…</div></div>
+        <div class="hub-list" id="hubList"></div>
+      </div>
+
+      <h3 class="hub-h3">대여 품목 <small>DECATHLON KIPRUN 실제 모델</small></h3>
+      <div class="rent-cats" id="rentCatalog"></div>
+
+      <div class="hygiene">
+        <div>🧼 <b>매회 세탁·살균</b><span>반납 후 전문 세탁 + UV 살균을 거쳐 다시 대여해요</span></div>
+        <div>👟 <b>깔창 교체</b><span>러닝화는 대여마다 새 깔창으로 바꿔요</span></div>
+        <div>🧦 <b>양말은 판매</b><span>위생을 위해 러닝 양말은 대여하지 않고 판매해요</span></div>
+        <div>🪪 <b>인증 회원 전용</b><span>본인인증한 러너만 빌릴 수 있어 분실 걱정이 적어요</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MATCH QUIZ -->
+  <section id="match" class="section">
+    <div class="wrap">
+      <p class="eyebrow">MATCHING TEST</p>
+      <h2>나에게 맞는 크루 찾기</h2>
+      <p class="sub">5가지 질문에 답하면 매칭률이 높은 크루 TOP 3를 보여드려요.</p>
+      <div class="quiz" id="quiz">
+        <div class="progress"><span id="qBar"></span></div>
+        <div id="qBody"></div>
+      </div>
+      <div id="qResult" class="result hidden"></div>
+    </div>
+  </section>
+
+  <!-- CREWS -->
+  <section id="crews" class="section soft">
+    <div class="wrap">
+      <p class="eyebrow">FIND YOUR CREW</p>
+      <h2>모집 중인 러닝 크루</h2>
+
+      <div class="type-tabs" id="typeTabs">
+        <button class="on" data-t="">전체</button>
+        <button data-t="fixed">📍 지정 코스</button>
+        <button data-t="free">🗺 자유 코스</button>
+      </div>
+
+      <div class="filters">
+        <label>지역 (서울)
+          <select id="fArea"><option value="">서울 전체</option></select>
+        </label>
+        <label>페이스
+          <select id="fPace">
+            <option value="">전체</option>
+            <option value="입문">입문 (7:00/km 이상)</option>
+            <option value="중급">중급 (5:30~7:00/km)</option>
+            <option value="상급">상급 (5:30/km 이하)</option>
+          </select>
+        </label>
+        <label>거리
+          <select id="fDist">
+            <option value="">전체</option>
+            <option value="short">5km 이하</option>
+            <option value="mid">5~10km</option>
+            <option value="long">10km 이상</option>
+          </select>
+        </label>
+        <label>시간대
+          <select id="fTime">
+            <option value="">전체</option>
+            <option value="새벽">새벽·아침</option>
+            <option value="저녁">평일 저녁</option>
+            <option value="주말">주말</option>
+          </select>
+        </label>
+        <label class="search">검색
+          <input id="fQuery" type="search" placeholder="크루명, 코스, 장소 검색" />
+        </label>
+      </div>
+      <div class="vibes" id="fVibes"></div>
+      <div class="active-courses" id="activeCourses"></div>
+
+      <div class="list-head">
+        <span id="resultCount"></span>
+        <select id="fSort">
+          <option value="soon">마감 임박순</option>
+          <option value="pace">페이스 빠른순</option>
+          <option value="dist">거리 짧은순</option>
+        </select>
+      </div>
+      <div class="grid" id="crewGrid"></div>
+    </div>
+  </section>
+
+  <!-- CREATE -->
+  <section id="create" class="section">
+    <div class="wrap create">
+      <div class="create-intro">
+        <p class="eyebrow">HOST A RUN</p>
+        <h2>원하는 크루가 없다면,<br/>직접 만들어보세요</h2>
+        <p class="sub">서울 러닝 코스를 골라 같이 뛸 사람을 모으거나, 코스 없이 각자 뛰고 인증하는 자유 코스 크루를 만들 수 있어요.</p>
+        <ul class="rules">
+          <li>📍 서울 25개 자치구 안에서만 개설할 수 있어요</li>
+          <li>🌙 야간 러닝은 밝은 옷과 라이트를 챙겨주세요</li>
+          <li>🤝 첫 만남은 공개된 장소에서 해주세요</li>
+        </ul>
+      </div>
+      <form id="createForm" class="form" novalidate>
+        <div class="seg" id="cType">
+          <button type="button" data-t="fixed" class="on">📍 지정 코스</button>
+          <button type="button" data-t="free">🗺 자유 코스</button>
+        </div>
+        <p class="hint" id="cTypeHint"></p>
+
+        <label>크루 이름<input name="name" maxlength="24" placeholder="예) 망원 선셋런" /></label>
+
+        <div id="fixedFields">
+          <p class="flabel">코스 선택</p>
+          <div class="picker" id="cCourse"></div>
+          <label style="margin-top:14px">모이는 장소<input name="spot" placeholder="예) 망원한강공원 망원나들목" /></label>
+        </div>
+
+        <div id="freeFields" class="hidden">
+          <div class="two">
+            <label>활동 지역<select name="freeArea" id="cFreeArea"></select></label>
+            <label>주간 목표 (km)<input name="goal" type="number" min="5" max="150" value="20" /></label>
+          </div>
+        </div>
+
+        <div class="two">
+          <label>목표 페이스 (분/km)<input name="pace" type="number" step="0.5" min="3.5" max="9" value="6" /></label>
+          <label><span id="distLabel">거리 (km)</span><input name="distance" type="number" min="2" max="30" value="5" /></label>
+        </div>
+        <div class="two">
+          <label>시간대<select name="time" id="cTime"><option>저녁</option><option>새벽</option><option>주말</option></select></label>
+          <label>모집 인원<input name="capacity" type="number" min="2" max="50" value="8" /></label>
+        </div>
+        <label><span id="whenLabel">일정</span><input name="when" placeholder="예) 매주 수 20:00" /></label>
+        <fieldset><legend>크루 분위기 (여러 개 선택 가능)</legend><div class="vibes" id="cVibes"></div></fieldset>
+        <label>소개<textarea name="desc" rows="3" maxlength="120" placeholder="어떤 러닝을 하고 싶은지 소개해주세요"></textarea></label>
+        <p class="form-err" id="formErr"></p>
+        <button class="btn btn-primary full" type="submit">크루 개설하기</button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <a class="logo"><span class="logo-dot"></span>RUNMATE<b>SEOUL</b></a>
+    <p>서울 2030 소셜 러닝 매칭 & 런허브 렌탈 플랫폼 · 서울특별시 25개 자치구 한정 운영 · 과제용 프로토타입</p>
+    <p class="muted">데카트론·CU 협업은 과제용 콘셉트이며 실제 제휴가 아니에요. CU 런허브 지점은 가상 지점이에요. 제품 사진·모델명·정가 출처: <a href="https://www.decathlon.co.kr" target="_blank" rel="noopener">데카트론 코리아</a></p>
+    <p class="muted">지도 데이터 © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors · 위성사진 © <a href="https://www.esri.com" target="_blank" rel="noopener">Esri</a>, Maxar, Earthstar Geographics · 도로 경로 OSRM</p>
+  </div>
+</footer>
+
+<div class="modal hidden" id="modal" role="dialog" aria-modal="true">
+  <div class="modal-box">
+    <button class="close" id="modalClose" aria-label="닫기">×</button>
+    <div id="modalBody"></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
